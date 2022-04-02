@@ -69,20 +69,20 @@ def delay(n=3):
         
 def south_car(monitor):
         delay()
-        print(f"South car nº {current_process().name} wants to go South")
+        print(f"Car nº {current_process().name} direction South wants to enter")
         monitor.wants_go_south()
-        print(f"South car nº {current_process().name} enters the tunnel going South")
+        print(f"Car nº {current_process().name} heading South enters the tunnel")
         delay()
-        print(f"South car nº {current_process().name} leaves the tunnel from the South")
+        print(f"Car nº {current_process().name} heading South leaving the tunnel")
         monitor.go_south()
-        
+    
 def north_car(monitor):
         delay()
-        print(f"North car nº {current_process().name} wants to go North")
+        print(f"Car nº {current_process().name} direction North wants to enter")
         monitor.wants_go_north()
-        print(f"North car nº {current_process().name} enters the tunnel going North")
+        print(f"Car nº {current_process().name} heading North enters the tunnel")
         delay()
-        print(f"North car nº {current_process().name} leaves the tunnel from the North")
+        print(f"Car nº {current_process().name} heading North leaving the tunnel")
         monitor.go_north()
         
 def main():
@@ -96,3 +96,4 @@ def main():
             
 if __name__ == "__main__":
         main()
+        
