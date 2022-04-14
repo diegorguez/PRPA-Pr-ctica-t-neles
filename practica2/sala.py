@@ -9,9 +9,36 @@ PLAYER_ONE=0
 PLAYER_TWO=1
 PLAYER_THREE=2
 POS_INI = [(100,20),(300,20),(500,20)]
-FPS=30
+MOVEMENT=20
 
 class Player():
+  def __init__(self,side):
+    self.side=side
+    if side==PLAYER_ONE
+      self.pos=[WIDHT/4,0]
+    if side==PLAYER_TWO
+      self.pos=[WIDTH/2,0]
+    if side==PLAYER_THREE
+      self.pos=[3*WIDTH/4,0]
+  
+  def get_pos(self):
+    return self.pos
+  
+  def get_side(self):
+    return self.side
+ 
+  def moveDown(self):
+    self.pos[Y]+=MOVEMENT
+    if self.pos[Y]>HEIGHT:
+      self.pos[Y]=HEIGHT
+  
+  def moveUP(self):
+    self.pos[Y]+=MOVEMENT
+    if self.pos[Y]<0:
+      self.pos[Y]=0
+      
+  
+      
   
 class Car1():
   
