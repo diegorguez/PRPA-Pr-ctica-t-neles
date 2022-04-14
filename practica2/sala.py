@@ -48,7 +48,8 @@ class Player():
 class Car1():
   def __init__(self,index):
     self.x = rd.randint(-1000,-1) #Colocamos los cohces1 a la izquierda de form aleatoria
-    self.y = rd.randint(0,HEIGHT-10)
+    list = [100,300,500]           
+    self.y = random.choice(list)
     self.pos = [self.x , self.y]
     self.vel = random.randint(8,20) 
     
