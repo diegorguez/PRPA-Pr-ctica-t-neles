@@ -88,6 +88,27 @@ def player(side,conn,game):
     print(f"Game ended {game}")
     
 def main(ip_adrress):
+  manager=Manager()
+  try:
+    with Listener((ip_address,6000),authkey=b'secret pasword?) as listener:
+      n_player=0
+      players=[None,None,None]
+      game=Game(manager)
+      while True:
+        print(f"accepting connection {n_player}")
+        conn=listener.accept()
+        players{n_player}=Process(target=player,args=(n_player,conn,game))
+        n_player+=1
+        if n_player==3:
+          players[0].start()
+          players[1].start()
+          players[2].start()
+          n_player=0
+          players=[None,None,None]
+          game=Game(manager)
+  except Exceotion as e:
+    traceback.print_exc()
+                    
   
   
 if __name__=='__main__':
