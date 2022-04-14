@@ -37,7 +37,8 @@ class Player():
     if self.pos[Y]<0:
       self.pos[Y]=0
       
-  
+  def __str__(self):
+    return f"P<{SIDESSTR[self.side]},{self.pos}>"
       
   
 class Car1():
