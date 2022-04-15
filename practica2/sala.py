@@ -142,7 +142,7 @@ class Game(): #POR COMPLETAR
       return self.running
 
   def stop(self):
-      self.running = False
+      self.running.value=0
 
   def moveUp(self,player):
       self.lock.acquire()
