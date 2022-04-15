@@ -1,3 +1,9 @@
+"""Aplicación distribuida: Juego: Cruzar la carretera
+   Alejandro Cruz
+   Pablo Mollá
+   Diego Rodríguez
+   Pablo Sánchez"""
+
 from multiprocessing.connection import Listener
 from multiprocessing import Process, Manager, Value, Lock
 import traceback
