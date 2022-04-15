@@ -10,8 +10,9 @@ PLAYER_ONE=0
 PLAYER_TWO=1
 PLAYER_THREE=2
 
+SIDESSTR = ["left","centre","right"]
 SIDES=["left","right"]
-SIDESSTR=["left","rigth"]
+#SIDESSTR=["left","rigth"]
 
 class Rabbit():
   def __init__(self,side)
@@ -100,3 +101,100 @@ class Game():
       return f"G<{self.rabbit[PLAYER_ONE]}:{self.rabbit[PLAYER_TWO]}:{self.rabbit[PLAYER_THREE]}:{self.car2[i]}>"
     for i in range(2):
       return f"G<{self.rabbit[PLAYER_ONE]}:{self.rabbit[PLAYER_TWO]}:{self.rabbit[PLAYER_THREE]}:{self.car3[i]}>"
+              
+class Rabbit_Draw(pygame.sprite.Sprite):
+    
+    def __init__(self,mon,ind):
+        super().__init__()
+        self.rabbit = rab
+        self.index = ind
+        self.image = pygame.image.load(f'conejo{self.index}.png')
+        self.image = pygame.transform.scale(self.image,(70,70))
+        self.image.set_colorkey(WHITE)
+        self.rect = self.image.get_rect()
+        self.update()
+        
+    def update(self):        
+        pos = self.rabbit.get_pos()
+        self.rect.centerx, self.rect.centery = pos  
+        
+    def draw(self, screen):
+        screen.window.blit(self.image, self.rect)
+   
+    def __str__(self):
+        return f"S<{self.rab}>"
+              
+class Car_Draw(pygame.sprite.Sprite):
+    def __init__(self, car):
+        super().__init__()
+        self.car = car
+        l = [1,2,3]
+        n = random.choice(l)
+        self.image= pygame.image.load(f'coche{n}.png')
+        self.image = pygame.transform.scale(self.image,(70,50))
+        self.image.set_colorkey(WHITE)
+        self.rect = self.image.get_rect()
+        self.update()
+
+    def update(self):
+        pos = self.car.get_pos()
+        self.rect.centerx, self.rect.centery = pos
+        
+    def draw(self,screen):
+        screen.window.blit(self.image,(self.ball.pos))
+       
+    def __str__(self):
+        return f"P<{self.car.pos}>"
+              
+class Display(): #SIN TERMINAR
+    
+    def __init__(self, game):        
+        self.game = game
+        self.score = game.get_score()
+        self.rabbitD = [Rabbit_Draw(self.game.get_monkey(i),i+1) for i in range(3)]
+        self.carD = [Car_Draw(self.game.get_banana(i)) for i in range(3)]
+        self.all_sprites = pygame.sprite.Group()
+        self.rabbit_group = pygame.sprite.Group()
+        self.bcar_group = pygame.sprite.Group()
+        for rabbit in self.rabbitD:
+            self.all_sprites.add(rabbit)
+            self.rabbit_group.add(rabbit)
+        for banana in self.bananaD:
+            self.all_sprites.add(banana)
+            self.banana_group.add(banana)
+        self.screen = pygame.display.set_mode(SIZE)
+        self.clock =  pygame.time.Clock()  #FPS
+        self.background = pygame.image.load('road.jpg')
+        self.background = pygame.transform.scale(self.background,(400,600))
+        pygame.init()
+     
+    def analyze_events(self, side):        
+        events = []        
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    events.append("quit")
+                elif event.key == pygame.K_DOWN:
+                    events.append("down")
+                elif event.key == pygame.K_UP:
+                    events.append("up")
+            elif event.type == pygame.QUIT:
+                events.append("quit")        
+        #if pygame.sprite.groupcollide(self.rabbitD,self.carD,False,False):            
+        if pygame.sprite.spritecollideany(self.rabbitD[0],self.carD):
+            events.append("collideleft")
+            
+        if pygame.sprite.spritecollideany(self.rabbitD[1],self.carD):
+           events.append("collideright")               
+                
+        return events
+
+    def refresh(self):
+      #FALTA REFRESH
+
+    def tick(self):
+        self.clock.tick(FPS)
+
+    @staticmethod
+    def quit():
+        pygame.quit()
