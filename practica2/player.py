@@ -4,7 +4,7 @@ import pygame
 import sys, os
 
 HEIGHT=400
-WIDTH=600
+WIDTH=800
 
 PLAYER_ONE=0
 PLAYER_TWO=1
@@ -13,6 +13,8 @@ PLAYER_THREE=2
 SIDESSTR = ["left","centre","right"]
 SIDES=["left","right"]
 #SIDESSTR=["left","rigth"]
+
+##################################################
 
 class Rabbit():
   def __init__(self,side)
@@ -31,13 +33,20 @@ class Rabbit():
    def __str__(self):
     return f"P<{SIDES[self.side],self.pos}>"
   
+##################################################
+
 class Car1():
-  
+
+################################################## 
+ 
 class Car2():
+
+##################################################  
   
 class Car3():
   
-  
+##################################################
+
 class Game():
   def __init(self):
     self.players=[Player(i) for i in range(3)]
@@ -101,6 +110,8 @@ class Game():
       return f"G<{self.rabbit[PLAYER_ONE]}:{self.rabbit[PLAYER_TWO]}:{self.rabbit[PLAYER_THREE]}:{self.car2[i]}>"
     for i in range(2):
       return f"G<{self.rabbit[PLAYER_ONE]}:{self.rabbit[PLAYER_TWO]}:{self.rabbit[PLAYER_THREE]}:{self.car3[i]}>"
+
+##################################################
               
 class Rabbit_Draw(pygame.sprite.Sprite):
     
@@ -123,8 +134,11 @@ class Rabbit_Draw(pygame.sprite.Sprite):
    
     def __str__(self):
         return f"S<{self.rab}>"
+
+##################################################
               
 class Car_Draw(pygame.sprite.Sprite):
+    
     def __init__(self, car):
         super().__init__()
         self.car = car
@@ -146,6 +160,8 @@ class Car_Draw(pygame.sprite.Sprite):
     def __str__(self):
         return f"P<{self.car.pos}>"
               
+##################################################
+              
 class Display(): #SIN TERMINAR
     
     def __init__(self, game):        
@@ -165,7 +181,7 @@ class Display(): #SIN TERMINAR
         self.screen = pygame.display.set_mode(SIZE)
         self.clock =  pygame.time.Clock()  #FPS
         self.background = pygame.image.load('road.jpg')
-        self.background = pygame.transform.scale(self.background,(400,600))
+        self.background = pygame.transform.scale(self.background,(WIDTH,HEIGHT))
         pygame.init()
      
     def analyze_events(self, side):        
@@ -182,16 +198,22 @@ class Display(): #SIN TERMINAR
                 events.append("quit")        
         #if pygame.sprite.groupcollide(self.rabbitD,self.carD,False,False):            
         if pygame.sprite.spritecollideany(self.rabbitD[0],self.carD):
-            events.append("collideleft")
-            
+            events.append("collideleft")            
         if pygame.sprite.spritecollideany(self.rabbitD[1],self.carD):
-           events.append("collideright")               
-                
+           events.append("collideright")                     
         return events
 
     def refresh(self):
-      #FALTA REFRESH
-
+       pos=self.rabbit.get.pos()
+           if pos[0]==0 or pos[1]==0 or pos[2]==0:
+              font2=pygame.font.Font(None,100)
+              text1=font2.render(f"GAME OVER",1,(255,0,0))
+              self.screen.blit(text1,(150,250))
+       self.all_sprites.update()
+       self.screen.blit(self.background,(0,0))
+       self.all_sprites.draw(self.screen)
+       pygame.display.flip()
+              
     def tick(self):
         self.clock.tick(FPS)
 
