@@ -137,31 +137,75 @@ class Rabbit_Draw(pygame.sprite.Sprite):
 
 ##################################################
               
-class Car_Draw(pygame.sprite.Sprite):
+class Car1_Draw(pygame.sprite.Sprite):
     
-    def __init__(self, car):
+    def __init__(self, car1):
         super().__init__()
-        self.car = car
-        l = [1,2,3]
-        n = random.choice(l)
-        self.image= pygame.image.load(f'coche{n}.png')
+        self.car1 = car1
+        self.image= pygame.image.load(f'coche1.png')
         self.image = pygame.transform.scale(self.image,(70,50))
         self.image.set_colorkey(WHITE)
         self.rect = self.image.get_rect()
         self.update()
 
     def update(self):
-        pos = self.car.get_pos()
+        pos = self.car1.get_pos()
         self.rect.centerx, self.rect.centery = pos
         
     def draw(self,screen):
         screen.window.blit(self.image,(self.ball.pos))
        
     def __str__(self):
-        return f"P<{self.car.pos}>"
+        return f"P<{self.car1.pos}>"
               
 ##################################################
+
+class Car2_Draw(pygame.sprite.Sprite):
+    
+    def __init__(self, car2):
+        super().__init__()
+        self.car2 = car2
+        self.image= pygame.image.load(f'coche2.png')
+        self.image = pygame.transform.scale(self.image,(70,50))
+        self.image.set_colorkey(WHITE)
+        self.rect = self.image.get_rect()
+        self.update()
+
+    def update(self):
+        pos = self.car2.get_pos()
+        self.rect.centerx, self.rect.centery = pos
+        
+    def draw(self,screen):
+        screen.window.blit(self.image,(self.ball.pos))
+       
+    def __str__(self):
+        return f"P<{self.car2.pos}>"
               
+##################################################
+
+class Car3_Draw(pygame.sprite.Sprite):
+    
+    def __init__(self, car3):
+        super().__init__()
+        self.car3 = car3
+        self.image= pygame.image.load(f'coche3.png')
+        self.image = pygame.transform.scale(self.image,(70,50))
+        self.image.set_colorkey(WHITE)
+        self.rect = self.image.get_rect()
+        self.update()
+
+    def update(self):
+        pos = self.car3.get_pos()
+        self.rect.centerx, self.rect.centery = pos
+        
+    def draw(self,screen):
+        screen.window.blit(self.image,(self.ball.pos))
+       
+    def __str__(self):
+        return f"P<{self.car3.pos}>"              
+
+##################################################        
+
 class Display(): #SIN TERMINAR
     
     def __init__(self, game):        
