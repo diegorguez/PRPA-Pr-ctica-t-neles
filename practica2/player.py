@@ -206,7 +206,7 @@ class Display(): #SIN TERMINAR
     def refresh(self):
        self.all_sprites.update()
        self.screen.blit(self.background,(0,0))
-       pos=self.rabbit.get.pos()
+       pos=self.rabbit.get_pos()
            if pos[0]==0 or pos[1]==0 or pos[2]==0:
               font2=pygame.font.Font(None,100)
               text1=font2.render(f"GAME OVER",1,(255,0,0))
