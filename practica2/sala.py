@@ -11,6 +11,8 @@ PLAYER_TWO=1
 PLAYER_THREE=2
 MOVEMENT=20
 
+X = 0
+Y = 0
 ########################################################
 
 class Conejo():
@@ -19,13 +21,13 @@ class Conejo():
     self.side=side
     if side==PLAYER_ONE
       self.pos=[WIDHT/4,0]
-      #self.pos=[WIDHT/4,HEIGHT]
+      #self.pos=[WIDHT/4,HEIGHT-30]
     if side==PLAYER_TWO
       self.pos=[WIDTH/2,0]
-      #self.pos=[WIDTH/2,HEIGHT]
+      #self.pos=[WIDTH/2,HEIGHT-30]
     if side==PLAYER_THREE
       self.pos=[3*WIDTH/4,0]
-      #self.pos=[3*WIDTH/4,HEIGHT]
+      #self.pos=[3*WIDTH/4,HEIGHT-30]
   
   def get_pos(self):
     return self.pos
@@ -142,7 +144,18 @@ class Game(): #POR COMPLETAR
       return self.running
 
   def stop(self):
-      self.running.value=0
+  	pos1 = self.players[0].pos[1]
+        pos2 = self.players[1].pos[1]
+        pos3 = self.players[2].pos[1]
+        if pos1 <= 0:
+            self.winner = 1 #guardamos el ganador por si lo queremos poner luego por pantalla
+            self.running.value = 0
+        if pos2 <= 0:
+            self.winner = 2
+            self.running.value = 0
+        if pos3 <= 0:
+            self.winner = 3
+            self.running.value = 0
 
   def moveUp(self,player):
       self.lock.acquire()
