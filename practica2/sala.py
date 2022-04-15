@@ -12,6 +12,7 @@ PLAYER_THREE=2
 MOVEMENT=20
 
 class Player():
+  #clase de los conejos, para indicar su tamaño, su posición y sus movimientos
   def __init__(self,side):
     self.side=side
     if side==PLAYER_ONE
@@ -45,10 +46,11 @@ class Player():
     return f"P<{SIDESSTR[self.side]},{self.pos}>"
       
   
-class Car1(): #Coches que van de izquierda a derecha
+class Car1():
+  #Clase de los coches que van de izquierda a derecha, indicando su tamaño, su posición y sus movimientos.
   def __init__(self,index):
-    self.x = rd.randint(-1000,-1) #Colocamos los cohces1 y coches3 a la izquierda de form aleatoria
-    list = [100,500]   #Corresponde al carril superior        
+    self.x = rd.randint(-10000,-1) #los situamos a la izquierda de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante
+    list = [100,500]   #La altura 100 se coresponde con el carril superior, y la altura 500 con el inferior       
     self.y = random.choice(list)
     self.pos = [self.x , self.y]
     self.vel = random.randint(8,20) 
@@ -56,7 +58,7 @@ class Car1(): #Coches que van de izquierda a derecha
     def get_pos(self):
         return self.pos         
         
-    def update(self):        
+    def update(self): #con la función update (el paso de los frames del juego) indicamos que los coches solo se moverán en el eje horizontal        
         self.pos[Y] = self.pos[Y] 
         self.pos[X] += self.vel  
      
@@ -65,15 +67,15 @@ class Car1(): #Coches que van de izquierda a derecha
   
 class Car2(): #Coches que van de derecha a izquierda
   def __init__(self,index):
-    self.x = rd.randint(800,1800) #Colocamos los cohces2 a la derecha de form aleatori         
-    self.y = 300   #Corresponde al carril central
+    self.x = rd.randint(800,10800) #los situamos a la derecha de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante       
+    self.y = 300   #la altura 300 se corresponde con el carril central
     self.pos = [self.x , self.y]
     self.vel = random.randint(8,20) 
     
     def get_pos(self):
         return self.pos         
         
-    def update(self):        
+    def update(self): #con la función update (el paso de los frames del juego) indicamos que los coches solo se moverán en el eje horizontal        
         self.pos[Y] = self.pos[Y] 
         self.pos[X] += self.vel  
      
@@ -83,6 +85,8 @@ class Car2(): #Coches que van de derecha a izquierda
   
 class Game():
   
+  
+  
 def player(side,conn,game):
   try:
     print(f"starting player {SIDESSTR[side]}:{game.get_info()}")
@@ -91,15 +95,24 @@ def player(side,conn,game):
       command=""
       while command != "next":
         command=conn.recv()
-        if command=="up":
+        if command=="up": #para que la tecla "up" haga que avance el conejo
           game.moveUp(side)
-        elif command=="down":
+        elif command=="down": #para que la tecla "down" haga que retroceda el conejo
           game.moveDown(side)
+        elif command=="collideone": #para cuando el conejo 1 se choque con algún coche
+          #codigo (aplicacion en clase game)
+        elif command=="collidetwo": #para cuando el conejo 2 se choque con algún coche
+          #codigo (aplicacion en clase game)
+        elif command=="collidethree": #para cuando el conejo 3 se choque con algún coche
+          #codigo (aplicacion en clase game)
+          
   except:
     traceback.print_exc()
     conn.close()
+    
   finally:
     print(f"Game ended {game}")
+    
     
 def main(ip_adrress):
   manager=Manager()
