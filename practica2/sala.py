@@ -11,6 +11,8 @@ PLAYER_TWO=1
 PLAYER_THREE=2
 MOVEMENT=20
 
+########################################################
+
 class Player():
   #clase de los conejos, para indicar su tamaño, su posición y sus movimientos
   def __init__(self,side):
@@ -45,47 +47,119 @@ class Player():
   def __str__(self):
     return f"P<{SIDESSTR[self.side]},{self.pos}>"
       
+########################################################  
   
 class Car1():
-  #Clase de los coches que van de izquierda a derecha, indicando su tamaño, su posición y sus movimientos.
+  #Clase de los coches del carril superior, indicando su tamaño, su posición y sus movimientos.
   def __init__(self,index):
-    self.x = rd.randint(-10000,-1) #los situamos a la izquierda de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante
-    list = [100,500]   #La altura 100 se coresponde con el carril superior, y la altura 500 con el inferior       
-    self.y = random.choice(list)
+    self.x = rd.randint(-10000,-1) #los situamos a la izquierda de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante  
+    self.y = 100  #La altura 100 se coresponde con el carril superior
     self.pos = [self.x , self.y]
     self.vel = random.randint(8,20) 
     
-    def get_pos(self):
-        return self.pos         
+  def get_pos(self):
+    return self.pos         
         
-    def update(self): #con la función update (el paso de los frames del juego) indicamos que los coches solo se moverán en el eje horizontal        
-        self.pos[Y] = self.pos[Y] 
-        self.pos[X] += self.vel  
+  def update(self): #con la función update (el paso de los frames del juego) indicamos que los coches solo se moverán en el eje horizontal        
+    self.pos[Y] = self.pos[Y] 
+    self.pos[X] += self.vel  
      
-    def __str__(self):
-        return f"B<{self.pos}>"
+  def __str__(self):
+    return f"B<{self.pos}>"
   
-class Car2(): #Coches que van de derecha a izquierda
+########################################################  
+  
+class Car2():
+  #Clase de los coches que van por el carril medio, de derecha a izquierda, indicando su tamaño, su posición y sus movimientos.
   def __init__(self,index):
     self.x = rd.randint(800,10800) #los situamos a la derecha de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante       
     self.y = 300   #la altura 300 se corresponde con el carril central
     self.pos = [self.x , self.y]
     self.vel = random.randint(8,20) 
     
-    def get_pos(self):
-        return self.pos         
+  def get_pos(self):
+    return self.pos         
         
-    def update(self): #con la función update (el paso de los frames del juego) indicamos que los coches solo se moverán en el eje horizontal        
-        self.pos[Y] = self.pos[Y] 
-        self.pos[X] += self.vel  
+  def update(self): #con la función update (el paso de los frames del juego) indicamos que los coches solo se moverán en el eje horizontal        
+    self.pos[Y] = self.pos[Y] 
+    self.pos[X] += self.vel  
      
-    def __str__(self):
-        return f"B<{self.pos}>"
+  def __str__(self):
+    return f"B<{self.pos}>"
   
+########################################################  
   
-class Game():
+class Car3():
+  #Clase de los coches del carril superior, de izquierda a derecha, indicando su tamaño, su posición y sus movimientos.
+  def __init__(self,index):
+    self.x = rd.randint(-10000,-1) #los situamos a la izquierda de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante  
+    self.y = 500  #La altura 500 se coresponde con el carril inferior
+    self.pos = [self.x , self.y]
+    self.vel = random.randint(8,20) 
+    
+  def get_pos(self):
+    return self.pos         
+        
+  def update(self): #con la función update (el paso de los frames del juego) indicamos que los coches solo se moverán en el eje horizontal        
+    self.pos[Y] = self.pos[Y] 
+    self.pos[X] += self.vel  
+     
+  def __str__(self):
+    return f"B<{self.pos}>"  
   
+########################################################
   
+class Game(): #POR COMPLETAR
+  
+  def __init(self,manager):
+    
+  def get_player(self,side):
+    
+  def get_car1(self):
+    
+  def get_car2(self):
+    
+  def get_car3(self):
+    
+  def is_running(self):
+    
+  def stop(self):
+    
+  def moveUp(self,player):
+    
+  def moveDown(self,player):
+    
+  def player1collide(self,player): #para cuando el conejo 1 se choque con algún coche
+    
+  def player2collide(self,player): #para cuando el conejo 2 se choque con algún coche
+    
+  def player3collide(self,player): #para cuando el conejo 3 se choque con algún coche
+    
+  def get_into(self):
+    #Diccionario que nos de las posiciones de todos los elementos en pantalla
+    pos_Car1=[]
+    for i in range (2):
+      pos_Car1.append(self.car1[i].get_pos())
+    pos_Car2=[]
+    for i in range (2):
+      pos_Car2.append(self.car2[i].get_pos())
+    pos_Car3=[]
+    for i in range (2):
+      pos_Car3.append(self.car3[i].get_pos())
+    info={'pos_player_one':self.player[PLAYER_ONE].get_pos(),
+          'pos_player_two':self.player[PLAYER_TWO].get_pos(),
+          'pos_player_three':self.player[PLAYER_THREE].get_pos(),
+          'pos_car_one':pos_Car1,'pos_car_two':pos_Car2,'pos_car_three':pos_Car3,
+         'is_running':self.running.value==1}
+    return info
+  
+  def move_car1(self):
+    
+  def move_car2(self):
+    
+  def move_car3(self):
+  
+########################################################
   
 def player(side,conn,game):
   try:
@@ -113,6 +187,7 @@ def player(side,conn,game):
   finally:
     print(f"Game ended {game}")
     
+######################################################## 
     
 def main(ip_adrress):
   manager=Manager()
@@ -136,7 +211,7 @@ def main(ip_adrress):
   except Exceotion as e:
     traceback.print_exc()
                     
-  
+########################################################
   
 if __name__=='__main__':
   ip_address="127.0.0.1"
