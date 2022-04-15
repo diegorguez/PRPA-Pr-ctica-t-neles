@@ -198,6 +198,15 @@ class Game(): #POR COMPLETAR
     return info
   
   def move_car1(self):
+      self.lock.acquire()
+      for i in range(2):
+	  coche1=self.car1[i]
+	  coche1.update()
+	  pos=coche1.get_pos()
+	  if pos[0]>=WIDTH:
+	      coche1=Car1(i)
+	  self.car[1]=coche1
+      self.lock.release()
     
   def move_car2(self):
     
