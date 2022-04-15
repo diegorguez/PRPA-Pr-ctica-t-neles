@@ -205,13 +205,30 @@ class Game(): #POR COMPLETAR
 	  pos=coche1.get_pos()
 	  if pos[0]>=WIDTH:
 	      coche1=Car1(i)
-	  self.car[1]=coche1
+	  self.car1[i]=coche1
       self.lock.release()
     
   def move_car2(self):
-    
+      self.lock.acquire()
+      for i in range(2):
+	  coche2=self.car2[i]
+	  coche2.update()
+	  pos=coche2.get_pos()
+	  if pos[0]>=WIDTH:
+	      coche2=Car2(i)
+	  self.car2[i]=coche2
+      self.lock.release()
+				  
   def move_car3(self):
-  
+      self.lock.acquire()
+      for i in range(2):
+	  coche3=self.car3[i]
+	  coche3.update()
+	  pos=coche3.get_pos()
+	  if pos[0]>=WIDTH:
+	      coche3=Car3(i)
+	  self.car3[i]=coche3
+      self.lock.release()
 ########################################################
   
 def player(side,conn,game):
