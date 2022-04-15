@@ -114,27 +114,49 @@ class Car3():
   
 class Game(): #POR COMPLETAR
   
-  def __init(self,manager):
-    self.conejos=manager.list(Conejo(PLAYER_ONE), Conejo(PLAYER_TWO), CoNejo(PLAYER_THREE))
-    self.coches=manager.list()
-    self.running=Value('i',1)
-    self.lock=Lock()
-    
+  def __init__(self, manager):
+  
+      self.players = manager.list( [Player(PLAYER_ONE), Player(PLAYER_TWO), PLAYER(PLAYER_THREE) ]
+      self.car1 = manager.list( [Car1(i) for i in range(2)] )
+      self.car2 = manager.list( [Car2(i) for i in range(2)] )
+      self.car3 = manager.list( [Car3(i) for i in range(2)] )
+      self.running = True
+      self.lock = Lock()
+  	
   def get_player(self,side):
-    
+      return self.players[side]
+
   def get_car1(self):
+      for i in range(2):
+	   return self.car1[i]
     
   def get_car2(self):
-    
+      for i in range(2):
+	   return self.car2[i]
+  	
   def get_car3(self):
-    
+      for i in range(2):
+	   return self.car3[i]
+  
   def is_running(self):
-    
+      return self.running
+
   def stop(self):
-    
+      self.running = False
+
   def moveUp(self,player):
-    
-  def moveDown(self,player):
+      self.lock.acquire()
+      p = self.players[player]
+      p.moveUp()
+      self.players[player] = p
+      self.lock.release()
+
+   def moveDown(self,player):
+      self.lock.acquire()
+      p = self.players[player]
+      p.moveDown()
+      self.players[player] = p
+      self.lock.release() 
     
   def player_collide(self,player): #Para cuando algún conejo se choque con un coche
     self.lock.acquire()
