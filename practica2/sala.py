@@ -45,10 +45,10 @@ class Player():
     return f"P<{SIDESSTR[self.side]},{self.pos}>"
       
   
-class Car1():
+class Car1(): #Coches que van de izquierda a derecha
   def __init__(self,index):
-    self.x = rd.randint(-1000,-1) #Colocamos los cohces1 a la izquierda de form aleatoria
-    list = [100,300,500]           
+    self.x = rd.randint(-1000,-1) #Colocamos los cohces1 y coches3 a la izquierda de form aleatoria
+    list = [100,500]   #Corresponde al carril superior        
     self.y = random.choice(list)
     self.pos = [self.x , self.y]
     self.vel = random.randint(8,20) 
@@ -63,9 +63,23 @@ class Car1():
     def __str__(self):
         return f"B<{self.pos}>"
   
-class Car2():
+class Car2(): #Coches que van de derecha a izquierda
+  def __init__(self,index):
+    self.x = rd.randint(800,1800) #Colocamos los cohces2 a la derecha de form aleatori         
+    self.y = 300   #Corresponde al carril central
+    self.pos = [self.x , self.y]
+    self.vel = random.randint(8,20) 
+    
+    def get_pos(self):
+        return self.pos         
+        
+    def update(self):        
+        self.pos[Y] = self.pos[Y] 
+        self.pos[X] += self.vel  
+     
+    def __str__(self):
+        return f"B<{self.pos}>"
   
-class Car3():
   
 class Game():
   
