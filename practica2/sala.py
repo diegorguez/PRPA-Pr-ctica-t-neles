@@ -5,7 +5,7 @@ import sys
 import random as rd
 
 HEIGHT=400
-WIDTH=600
+WIDTH=800
 PLAYER_ONE=0
 PLAYER_TWO=1
 PLAYER_THREE=2
