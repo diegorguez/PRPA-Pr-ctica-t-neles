@@ -13,7 +13,7 @@ MOVEMENT=20
 
 ########################################################
 
-class Player():
+class Conejo():
   #clase de los conejos, para indicar su tamaño, su posición y sus movimientos
   def __init__(self,side):
     self.side=side
@@ -43,6 +43,9 @@ class Player():
     #self.pos[1]-=MOVEMENT
     if self.pos[1]<0:
       self.pos[1]=0
+  
+  def reiniciar_P(self):
+    self.pos[1]=0
       
   def __str__(self):
     return f"P<{SIDESSTR[self.side]},{self.pos}>"
@@ -112,6 +115,10 @@ class Car3():
 class Game(): #POR COMPLETAR
   
   def __init(self,manager):
+    self.conejos=manager.list(Conejo(PLAYER_ONE), Conejo(PLAYER_TWO), CoNejo(PLAYER_THREE))
+    self.coches=manager.list()
+    self.running=Value('i',1)
+    self.lock=Lock()
     
   def get_player(self,side):
     
@@ -129,11 +136,13 @@ class Game(): #POR COMPLETAR
     
   def moveDown(self,player):
     
-  def player1collide(self,player): #para cuando el conejo 1 se choque con algún coche
+  def player_collide(self,player): #Para cuando algún conejo se choque con un coche
+    self.lock.acquire()
+    p=self.players[player]
+    p.reiniciar_P()
+    self.players[player]=p
+    seelf.lock.release()
     
-  def player2collide(self,player): #para cuando el conejo 2 se choque con algún coche
-    
-  def player3collide(self,player): #para cuando el conejo 3 se choque con algún coche
     
   def get_into(self):
     #Diccionario que nos de las posiciones de todos los elementos en pantalla
@@ -173,12 +182,9 @@ def player(side,conn,game):
           game.moveUp(side)
         elif command=="down": #para que la tecla "down" haga que retroceda el conejo
           game.moveDown(side)
-        elif command=="collideone": #para cuando el conejo 1 se choque con algún coche
-          #codigo (aplicacion en clase game)
-        elif command=="collidetwo": #para cuando el conejo 2 se choque con algún coche
-          #codigo (aplicacion en clase game)
-        elif command=="collidethree": #para cuando el conejo 3 se choque con algún coche
-          #codigo (aplicacion en clase game)
+        elif command=="collide": #para cuando algún conejo  se choque con algún coche
+          game.player_collide(side)
+        
           
   except:
     traceback.print_exc()
