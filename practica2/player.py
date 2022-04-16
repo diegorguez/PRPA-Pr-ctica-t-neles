@@ -1,4 +1,4 @@
-import multiprocessing.connection import client
+from multiprocessing.connection import client
 import traceback
 import pygame
 import sys, os
@@ -17,7 +17,7 @@ SIDES=["left","right"]
 ##################################################
 
 class Rabbit():
-    def __init__(self,side)
+    def __init__(self,side):
         self.side=side
         self.pos=[None,None]
     
