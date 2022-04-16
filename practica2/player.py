@@ -37,14 +37,50 @@ class Rabbit():
 
 class Car1():
 
+    def __init__(self,n):
+        self.pos=[None,None]
+    
+    def get_pos(self):
+        return self.pos
+      
+    def set_pos(self,pos):
+        self.pos=pos
+      
+    def __str__(self):
+        return f"C<self.pos>"
+      
 ################################################## 
  
 class Car2():
 
+    def __init__(self,n):
+        self.pos=[None,None]
+    
+    def get_pos(self):
+        return self.pos
+      
+    def set_pos(self,pos):
+        self.pos=pos
+      
+    def __str__(self):
+        return f"C<self.pos>"
+      
 ##################################################  
   
 class Car3():
   
+    def __init__(self,n):
+        self.pos=[None,None]
+    
+    def get_pos(self):
+        return self.pos
+      
+    def set_pos(self,pos):
+        self.pos=pos
+      
+    def __str__(self):
+        return f"C<self.pos>"
+      
 ##################################################
 
 class Game():
