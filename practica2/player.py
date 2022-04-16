@@ -300,3 +300,40 @@ class Display(): #SIN TERMINAR
     @staticmethod
     def quit():
         pygame.quit()
+                
+##################################################                 
+                
+def main(ip_address):
+                
+    try:
+        with Client((ip_address,6000),authkeyb'secret password') as conn:
+            game=Game()
+            side,gameinfo=conn.recv()
+            print(f"I am playing {SIDESSTR[side]}")
+            game.update(gameinfo)
+            display=Display(game)
+            while game.is_running():
+                events=display.analyze_events(side)
+                for ev in events:
+                    conn.send(ev)
+                    if ev='quit'
+                        game.stop()
+                conn.send("next")
+                gameinfo=conn.recv()
+                game.update(gameinfo)
+                display.reflesh()
+                display.tick()
+    except:
+        traceback.print_exc()
+    finally:
+        pygame.quit()
+                
+        
+if __name__=="__main__":
+    ip_address="127.0.0.1"
+    if len(sys.argv)>1:
+        ip_address=sys.argv[1]
+    main(ip_address)
+               
+               
+
