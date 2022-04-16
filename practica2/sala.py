@@ -25,13 +25,13 @@ class Conejo():
 #clase de los conejos, para indicar su tamaño, su posición y sus movimientos
     def __init__(self,side):
         self.side=side
-        if side==PLAYER_ONE
+        if side==PLAYER_ONE:
             self.pos=[WIDHT/4,0]
             #self.pos=[WIDHT/4,HEIGHT-30]
-        if side==PLAYER_TWO
+        if side==PLAYER_TWO:
             self.pos=[WIDTH/2,0]
             #self.pos=[WIDTH/2,HEIGHT-30]
-        if side==PLAYER_THREE
+        if side==PLAYER_THREE:
             self.pos=[3*WIDTH/4,0]
             #self.pos=[3*WIDTH/4,HEIGHT-30]
   
