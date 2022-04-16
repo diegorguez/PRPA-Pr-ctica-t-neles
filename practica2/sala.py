@@ -39,7 +39,7 @@ class Conejo():
         return self.pos
   
     def get_side(self):
-    return self.side
+        return self.side
  
     def moveDown(self):
         self.pos[1]+=MOVEMENT
