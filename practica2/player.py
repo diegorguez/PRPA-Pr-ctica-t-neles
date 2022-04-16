@@ -1,4 +1,4 @@
-from multiprocessing.connection import client
+ffrom multiprocessing.connection import client
 import traceback
 import pygame
 import sys, os
@@ -116,9 +116,9 @@ class Game():
         self.car3[i].set_pos(pos)
     
     def update(self,gameinfo):
-        self.set_pos_rabbit(PLAYER_ONE,gameinfo['pos_player_one']
-        self.set_pos_rabbit(PLAYER_TWO,gameinfo['pos_player_two']
-        self.set_pos_rabbit(PLAYER_THREE,gameinfo['pos_player_three']
+        self.set_pos_rabbit(PLAYER_ONE, gameinfo['pos_player_one']
+        self.set_pos_rabbit(PLAYER_TWO, gameinfo['pos_player_two']
+        self.set_pos_rabbit(PLAYER_THREE, gameinfo['pos_player_three']
         info_car1=gameinfo['pos_car1']
         info_car2=gameinfo['pos_car2']
         info_car3=gameinfo['pos_car3']
@@ -334,6 +334,3 @@ if __name__=="__main__":
     if len(sys.argv)>1:
         ip_address=sys.argv[1]
     main(ip_address)
-               
-               
-
