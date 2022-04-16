@@ -36,64 +36,64 @@ class Conejo():
             #self.pos=[3*WIDTH/4,HEIGHT-30]
   
     def get_pos(self):
-    	return self.pos
+        return self.pos
   
     def get_side(self):
-   	return self.side
+    return self.side
  
     def moveDown(self):
-    	self.pos[1]+=MOVEMENT
-    	if self.pos[1]>HEIGHT:
+        self.pos[1]+=MOVEMENT
+        if self.pos[1]>HEIGHT:
             self.pos[1]=HEIGHT
   
     def moveUP(self):
-    	self.pos[1]+=MOVEMENT
-    	#self.pos[1]-=MOVEMENT
-   	if self.pos[1]<0:
+        self.pos[1]+=MOVEMENT
+        #self.pos[1]-=MOVEMENT
+    if self.pos[1]<0:
             self.pos[1]=0
   
     def reiniciar_P(self):
-    	self.pos[1]=0
+        self.pos[1]=0
       
     def __str__(self):
-    	return f"P<{SIDESSTR[self.side]},{self.pos}>"
+        return f"P<{SIDESSTR[self.side]},{self.pos}>"
       
 
   
 class Car1():
 #Clase de los coches del carril superior, indicando su tamaño, su posición y sus movimientos.
     def __init__(self,index):
-    	self.x = rd.randint(-10000,-1) #los situamos a la izquierda de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante  
-    	self.y = 100  #La altura 100 se coresponde con el carril superior
-    	self.pos = [self.x , self.y]
+        self.x = rd.randint(-10000,-1) #los situamos a la izquierda de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante  
+        self.y = 100  #La altura 100 se coresponde con el carril superior
+        self.pos = [self.x , self.y]
         self.vel = random.randint(8,20) 
     
     def get_pos(self):
-    	return self.pos         
+        return self.pos         
         
     def update(self): #con la función update (el paso de los frames del juego) indicamos que los coches solo se moverán en el eje horizontal        
-    	self.pos[Y] = self.pos[Y] 
-    	self.pos[X] += self.vel  
+        self.pos[Y] = self.pos[Y] 
+        self.pos[X] += self.vel  
      
     def __str__(self):
-    	return f"B<{self.pos}>"
+        return f"B<{self.pos}>"
   
   
   
 class Car2():
 #Clase de los coches que van por el carril medio, de derecha a izquierda, indicando su tamaño, su posición y sus movimientos.
     def __init__(self,index):
-    	self.x = rd.randint(800,10800) #los situamos a la derecha de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante       
-    	self.y = 300   #la altura 300 se corresponde con el carril central
-    	self.pos = [self.x , self.y]
-    	self.vel = random.randint(8,20) 
+        self.x = rd.randint(800,10800) #los situamos a la derecha de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante       
+        self.y = 300   #la altura 300 se corresponde con el carril central
+        self.pos = [self.x , self.y]
+        self.vel = random.randint(8,20) 
     
     def get_pos(self):
-    	return self.pos         
+        return self.pos         
         
     def update(self): #con la función update (el paso de los frames del juego) indicamos que los coches solo se moverán en el eje horizontal        
-    	self.pos[Y] = self.pos[Y] 
-    	self.pos[X] += self.vel  
+        self.pos[Y] = self.pos[Y] 
+        self.pos[X] += self.vel  
      
     def __str__(self):
     	return f"B<{self.pos}>"
@@ -103,20 +103,20 @@ class Car2():
 class Car3():
 #Clase de los coches del carril superior, de izquierda a derecha, indicando su tamaño, su posición y sus movimientos.
     def __init__(self,index):
-    	self.x = rd.randint(-10000,-1) #los situamos a la izquierda de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante  
-    	self.y = 500  #La altura 500 se coresponde con el carril inferior
-    	self.pos = [self.x , self.y]
-    	self.vel = random.randint(8,20) 
+        self.x = rd.randint(-10000,-1) #los situamos a la izquierda de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante  
+        self.y = 500  #La altura 500 se coresponde con el carril inferior
+        self.pos = [self.x , self.y]
+        self.vel = random.randint(8,20) 
     
     def get_pos(self):
-    	return self.pos         
+        return self.pos         
         
     def update(self): #con la función update (el paso de los frames del juego) indicamos que los coches solo se moverán en el eje horizontal        
-    	self.pos[Y] = self.pos[Y] 
-    	self.pos[X] += self.vel  
+        self.pos[Y] = self.pos[Y] 
+        self.pos[X] += self.vel  
      
     def __str__(self):
-    	return f"B<{self.pos}>"  
+        return f"B<{self.pos}>"  
   
 
   
@@ -130,27 +130,27 @@ class Game():
         self.car3 = manager.list( [Car3(i) for i in range(2)] )
         self.running = True
         self.lock = Lock()
-  	
+  
     def get_player(self,side):
         return self.players[side]
 
     def get_car1(self):
         for i in range(2):
-	    return self.car1[i]
+        return self.car1[i]
     
     def get_car2(self):
         for i in range(2):
-	    return self.car2[i]
-  	
+        return self.car2[i]
+  
     def get_car3(self):
         for i in range(2):
-	    return self.car3[i]
+        return self.car3[i]
   
     def is_running(self):
         return self.running
 
     def stop(self):
-  	pos1 = self.players[0].pos[1]
+        pos1 = self.players[0].pos[1]
         pos2 = self.players[1].pos[1]
         pos3 = self.players[2].pos[1]
         if pos1 <= 0:
@@ -205,36 +205,36 @@ class Game():
   def move_car1(self):
       self.lock.acquire()
       for i in range(2):
-	  coche1=self.car1[i]
-	  coche1.update()
-	  pos=coche1.get_pos()
-	  if pos[0]>=WIDTH:
-	      coche1=Car1(i)
-	  self.car1[i]=coche1
+      coche1=self.car1[i]
+      coche1.update()
+      pos=coche1.get_pos()
+      if pos[0]>=WIDTH:
+          coche1=Car1(i)
+      self.car1[i]=coche1
       self.lock.release()
     
   def move_car2(self):
       self.lock.acquire()
       for i in range(2):
-	  coche2=self.car2[i]
-	  coche2.update()
-	  pos=coche2.get_pos()
-	  if pos[0]>=WIDTH:
-	      coche2=Car2(i)
-	  self.car2[i]=coche2
+      coche2=self.car2[i]
+      coche2.update()
+      pos=coche2.get_pos()
+      if pos[0]>=WIDTH:
+          coche2=Car2(i)
+      self.car2[i]=coche2
       self.lock.release()
-				  
+
   def move_car3(self):
       self.lock.acquire()
       for i in range(2):
-	  coche3=self.car3[i]
-	  coche3.update()
-	  pos=coche3.get_pos()
-	  if pos[0]>=WIDTH:
-	      coche3=Car3(i)
-	  self.car3[i]=coche3
+      coche3=self.car3[i]
+      coche3.update()
+      pos=coche3.get_pos()
+      if pos[0]>=WIDTH:
+          coche3=Car3(i)
+      self.car3[i]=coche3
       self.lock.release()
-				    
+
 
   
 def player(side,conn,game):
@@ -271,18 +271,18 @@ def main(ip_adrress):
             game=Game(manager)
             while True:
                 print(f"accepting connection {n_player}")
-      		conn=listener.accept()
-        	players{n_player}=Process(target=player,args=(n_player,conn,game))
-        	n_player+=1
-        	if n_player==3:
-          	    players[0].start()
-         	    players[1].start()
-          	    players[2].start()
-          	    n_player=0
-         	    players=[None,None,None]
-       	 	    game=Game(manager)
+            conn=listener.accept()
+            players{n_player}=Process(target=player,args=(n_player,conn,game))
+            n_player+=1
+            if n_player==3:
+                players[0].start()
+                players[1].start()
+                players[2].start()
+                n_player=0
+                players=[None,None,None]
+                game=Game(manager)
     except Exceotion as e:
-    	traceback.print_exc()
+        traceback.print_exc()
                     
 
   
@@ -291,5 +291,3 @@ if __name__=='__main__':
     if len/sys.argv)>1:
         ip_address=sys.argv[1]
     main(ip_address)
-  
-         
