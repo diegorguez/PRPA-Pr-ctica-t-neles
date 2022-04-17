@@ -1,4 +1,4 @@
-from multiprocessing.connection import client
+from multiprocessing.connection import Client
 import traceback
 import pygame
 import sys, os
@@ -115,10 +115,10 @@ class Game():
     def set_pos_car3(self,i,pos):
         self.car3[i].set_pos(pos)
     
-    def update(self,gameinfo):
-        self.set_pos_rabbit(PLAYER_ONE, gameinfo['pos_player_one']
-        self.set_pos_rabbit(PLAYER_TWO, gameinfo['pos_player_two']
-        self.set_pos_rabbit(PLAYER_THREE, gameinfo['pos_player_three']
+    def update(self, gameinfo):
+        self.set_pos_rabbit(PLAYER_ONE, gameinfo['pos_player_one'])
+        self.set_pos_rabbit(PLAYER_TWO, gameinfo['pos_player_two'])
+        self.set_pos_rabbit(PLAYER_THREE, gameinfo['pos_player_three'])
         info_car1=gameinfo['pos_car1']
         info_car2=gameinfo['pos_car2']
         info_car3=gameinfo['pos_car3']
@@ -131,7 +131,7 @@ class Game():
         for i in range(2):
             Car3_i=info_car3[i]
             self.set_pos_car3(i,Car3_i)  
-      self.running=gameinfo['is running']
+        self.running=gameinfo['is running']
                        
     def is_running(self):
         return self.running
@@ -139,13 +139,13 @@ class Game():
     def finish(self):
         self.running=False
               
-    def __str__(self:
+    def __str__(self):
         for i in range(2):
-            return f"G<{self.rabbit[PLAYER_ONE]}:{self.rabbit[PLAYER_TWO]}:{self.rabbit[PLAYER_THREE]}:{self.car1[i]}>"
+            return f"G<{self.rabbit[PLAYER_ONE]}:{self.rabbit[PLAYER_TWO]}:{self.rabbit[PLAYER_THREE]}:-{self.car1[i]}>"
         for i in range(2):
-            return f"G<{self.rabbit[PLAYER_ONE]}:{self.rabbit[PLAYER_TWO]}:{self.rabbit[PLAYER_THREE]}:{self.car2[i]}>"
+            return f"G<{self.rabbit[PLAYER_ONE]}:{self.rabbit[PLAYER_TWO]}:{self.rabbit[PLAYER_THREE]}:-{self.car2[i]}>"
         for i in range(2):
-            return f"G<{self.rabbit[PLAYER_ONE]}:{self.rabbit[PLAYER_TWO]}:{self.rabbit[PLAYER_THREE]}:{self.car3[i]}>"
+            return f"G<{self.rabbit[PLAYER_ONE]}:{self.rabbit[PLAYER_TWO]}:{self.rabbit[PLAYER_THREE]}:-{self.car3[i]}>"
 
 ##################################################
               
@@ -284,15 +284,15 @@ class Display(): #SIN TERMINAR
         return events
 
     def refresh(self):
-       self.all_sprites.update()
-       self.screen.blit(self.background,(0,0))
-       pos=self.rabbit.get_pos()
-           if pos[0]==0 or pos[1]==0 or pos[2]==0:
-              font2=pygame.font.Font(None,100)
-              text1=font2.render(f"GAME OVER",1,(255,0,0))
-              self.screen.blit(text1,(150,250))
-       self.all_sprites.draw(self.screen)
-       pygame.display.flip()
+        self.all_sprites.update()
+        self.screen.blit(self.background, (0,0))
+        pos=self.rabbit.get_pos()
+        if pos[0]==0 or pos[1]==0 or pos[2]==0:
+           font2=pygame.font.Font(None,100)
+           text1=font2.render(f"GAME OVER",1,(255,0,0))
+           self.screen.blit(text1,(150,250))
+        self.all_sprites.draw(self.screen)
+        pygame.display.flip()
               
     def tick(self):
         self.clock.tick(FPS)
@@ -306,22 +306,22 @@ class Display(): #SIN TERMINAR
 def main(ip_address):
                 
     try:
-        with Client((ip_address,6000),authkeyb'secret password') as conn:
-            game=Game()
-            side,gameinfo=conn.recv()
+        with Client((ip_address, 6000), authkey=b'secret password') as conn:
+            game = Game()
+            side,gameinfo = conn.recv()
             print(f"I am playing {SIDESSTR[side]}")
             game.update(gameinfo)
-            display=Display(game)
+            display = Display(game)
             while game.is_running():
-                events=display.analyze_events(side)
+                events = display.analyze_events(side)
                 for ev in events:
                     conn.send(ev)
-                    if ev='quit'
+                    if ev == 'quit':
                         game.stop()
                 conn.send("next")
-                gameinfo=conn.recv()
+                gameinfo = conn.recv()
                 game.update(gameinfo)
-                display.reflesh()
+                display.refresh()
                 display.tick()
     except:
         traceback.print_exc()
