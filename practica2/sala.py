@@ -263,7 +263,7 @@ def player(side,conn,game):
     
 
     
-def main(ip_adrress):
+def main(ip_address):
     manager=Manager()
     try:
         with Listener((ip_address,6000),authkey=b'secret pasword') as listener:
