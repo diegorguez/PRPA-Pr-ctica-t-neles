@@ -282,7 +282,7 @@ def main(ip_adrress):
                    n_player=0
                    players=[None,None,None]
                    game=Game(manager)
-    except Exceotion as e:
+    except Exception as e:
         traceback.print_exc()
                     
 
