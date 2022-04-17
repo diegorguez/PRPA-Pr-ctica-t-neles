@@ -12,7 +12,6 @@ PLAYER_THREE=2
 
 SIDESSTR = ["left","centre","right"]
 SIDES=["left","right"]
-#SIDESSTR=["left","rigth"]
 
 ##################################################
 
