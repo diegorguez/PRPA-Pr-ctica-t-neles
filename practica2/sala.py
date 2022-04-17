@@ -26,8 +26,8 @@ class Conejo():
     def __init__(self,side):
         self.side=side
         if side==PLAYER_ONE:
-            self.pos=[WIDHT/4,0]
-            #self.pos=[WIDHT/4,HEIGHT-30]
+            self.pos=[WIDTH/4,0]
+            #self.pos=[WIDTH/4,HEIGHT-30]
         if side==PLAYER_TWO:
             self.pos=[WIDTH/2,0]
             #self.pos=[WIDTH/2,HEIGHT-30]
@@ -49,8 +49,8 @@ class Conejo():
     def moveUP(self):
         self.pos[1]+=MOVEMENT
         #self.pos[1]-=MOVEMENT
-    if self.pos[1]<0:
-            self.pos[1]=0
+        if self.pos[1]<0:
+           self.pos[1]=0
   
     def reiniciar_P(self):
         self.pos[1]=0
@@ -66,7 +66,7 @@ class Car1():
         self.x = rd.randint(-10000,-1) #los situamos a la izquierda de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante  
         self.y = 100  #La altura 100 se coresponde con el carril superior
         self.pos = [self.x , self.y]
-        self.vel = random.randint(8,20) 
+        self.vel = rd.randint(8,20) 
     
     def get_pos(self):
         return self.pos         
@@ -86,7 +86,7 @@ class Car2():
         self.x = rd.randint(800,10800) #los situamos a la derecha de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante       
         self.y = 300   #la altura 300 se corresponde con el carril central
         self.pos = [self.x , self.y]
-        self.vel = random.randint(8,20) 
+        self.vel = rd.randint(8,20) 
     
     def get_pos(self):
         return self.pos         
@@ -106,7 +106,7 @@ class Car3():
         self.x = rd.randint(-10000,-1) #los situamos a la izquierda de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante  
         self.y = 500  #La altura 500 se coresponde con el carril inferior
         self.pos = [self.x , self.y]
-        self.vel = random.randint(8,20) 
+        self.vel = rd.randint(8,20) 
     
     def get_pos(self):
         return self.pos         
@@ -124,7 +124,7 @@ class Game():
   
     def __init__(self, manager):
   
-        self.players=manager.list([Player(PLAYER_ONE),Player(PLAYER_TWO),Player(PLAYER_THREE)]
+        self.players=manager.list([Conejo(PLAYER_ONE), Conejo(PLAYER_TWO), Conejo(PLAYER_THREE)])
         self.car1=manager.list([Car1(i) for i in range(2)])
         self.car2=manager.list([Car2(i) for i in range(2)])
         self.car3=manager.list([Car3(i) for i in range(2)])
@@ -136,15 +136,15 @@ class Game():
 
     def get_car1(self):
         for i in range(2):
-        return self.car1[i]
+            return self.car1[i]
     
     def get_car2(self):
         for i in range(2):
-        return self.car2[i]
+            return self.car2[i]
   
     def get_car3(self):
         for i in range(2):
-        return self.car3[i]
+            return self.car3[i]
   
     def is_running(self):
         return self.running
@@ -241,7 +241,7 @@ class Game():
 def player(side,conn,game):
     try:
         print(f"starting player {SIDESSTR[side]}:{game.get_info()}")
-        conn.send_((side,game.get:info()))
+        conn.send_((side,game.get_info()))
         while game.is_running():
             command=""
             while command != "next":
@@ -266,22 +266,22 @@ def player(side,conn,game):
 def main(ip_adrress):
     manager=Manager()
     try:
-        with Listener((ip_address,6000),authkey=b'secret pasword?) as listener:
+        with Listener((ip_address,6000),authkey=b'secret pasword') as listener:
             n_player=0
             players=[None,None,None]
             game=Game(manager)
             while True:
                 print(f"accepting connection {n_player}")
-            conn=listener.accept()
-            players{n_player}=Process(target=player,args=(n_player,conn,game))
-            n_player+=1
-            if n_player==3:
-                players[0].start()
-                players[1].start()
-                players[2].start()
-                n_player=0
-                players=[None,None,None]
-                game=Game(manager)
+                conn=listener.accept()
+                players[n_player]=Process(target=player,args=(n_player,conn,game))
+                n_player+=1
+                if n_player==3:
+                   players[0].start()
+                   players[1].start()
+                   players[2].start()
+                   n_player=0
+                   players=[None,None,None]
+                   game=Game(manager)
     except Exceotion as e:
         traceback.print_exc()
                     
@@ -289,6 +289,6 @@ def main(ip_adrress):
   
 if __name__=='__main__':
     ip_address="127.0.0.1"
-    if len/sys.argv)>1:
+    if len(sys.argv)>1:
         ip_address=sys.argv[1]
     main(ip_address)
