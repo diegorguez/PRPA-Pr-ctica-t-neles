@@ -15,7 +15,7 @@ SIDES=["left","right"]
 
 ##################################################
 
-class Rabbit():
+class Player():
     def __init__(self,side):
         self.side=side
         self.pos=[None,None]
@@ -302,8 +302,8 @@ class Display(): #SIN TERMINAR
                 
 ##################################################                 
                 
-def main(ip_address): #problema
-                
+def main(ip_address):
+
     try:
         with Client((ip_address, 6000), authkey=b'secret password') as conn:
             game = Game()
@@ -316,7 +316,7 @@ def main(ip_address): #problema
                 for ev in events:
                     conn.send(ev)
                     if ev == 'quit':
-                        game.stop()
+                        game.finish()
                 conn.send("next")
                 gameinfo = conn.recv()
                 game.update(gameinfo)
