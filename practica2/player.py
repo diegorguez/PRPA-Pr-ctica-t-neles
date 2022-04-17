@@ -303,7 +303,7 @@ class Display(): #SIN TERMINAR
                 
 ##################################################                 
                 
-def main(ip_address):
+def main(ip_address): #problema
                 
     try:
         with Client((ip_address, 6000), authkey=b'secret password') as conn:
