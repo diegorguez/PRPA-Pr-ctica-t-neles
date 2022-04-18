@@ -47,10 +47,10 @@ class Player():
             self.pos[1]=HEIGHT
   
     def moveUP(self):
-        self.pos[1]+=MOVEMENT
-        #self.pos[1]-=MOVEMENT
-        if self.pos[1]<0:
-           self.pos[1]=0
+        #self.pos[1]+=MOVEMENT
+        self.pos[1]-=MOVEMENT
+        #if self.pos[1]<0:
+           #self.pos[1]=0
   
     def reiniciar_P(self):
         self.pos[1]=0
@@ -195,11 +195,11 @@ class Game():
         pos_Car3=[]
         for i in range (2):
             pos_Car3.append(self.car3[i].get_pos())
-        info={'pos_player_one':self.player[PLAYER_ONE].get_pos(),
-          'pos_player_two':self.player[PLAYER_TWO].get_pos(),
-          'pos_player_three':self.player[PLAYER_THREE].get_pos(),
+        info={'pos_player_one':self.players[PLAYER_ONE].get_pos(),
+          'pos_player_two':self.players[PLAYER_TWO].get_pos(),
+          'pos_player_three':self.players[PLAYER_THREE].get_pos(),
           'pos_car_one':pos_Car1,'pos_car_two':pos_Car2,'pos_car_three':pos_Car3,
-         'is_running':self.running.value==1}
+         'is_running':self.running}
         return info
   
     def move_car1(self):
@@ -236,12 +236,12 @@ class Game():
         self.lock.release()
 
     def __str__(self):     
-        return f"G<{self.player[PLAYER_ONE]}:{self.player[PLAYER_TWO]}:{self.player[PLAYER_THREE]}{self.running.value}"
+        return f"G<{self.player[PLAYER_ONE]}:{self.player[PLAYER_TWO]}:{self.player[PLAYER_THREE]}{self.running}"
   
 def player(side,conn,game):
     try:
         print(f"starting player {SIDESSTR[side]}:{game.get_info()}")
-        conn.send_((side,game.get_info()))
+        conn.send((side,game.get_info()))
         while game.is_running():
             command=""
             while command != "next":
@@ -276,7 +276,7 @@ def main(ip_address):
                 players[n_player] = Process(target=player,
                                             args=(n_player, conn, game))
                 n_player += 1
-                if n_player == 2:
+                if n_player == 3:
                     players[0].start()
                     players[1].start()
                     players[2].start()
