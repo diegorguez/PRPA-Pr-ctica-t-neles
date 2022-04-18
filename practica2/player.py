@@ -156,7 +156,7 @@ class Rabbit_Draw(pygame.sprite.Sprite):
         self.index = ind
         self.image = pygame.image.load(f'conejo{self.index}.png')
         self.image = pygame.transform.scale(self.image,(70,70))
-        self.image.set_colorkey(WHITE)
+        self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
         self.update()
         
@@ -179,7 +179,7 @@ class Car1_Draw(pygame.sprite.Sprite):
         self.car1 = car1
         self.image= pygame.image.load(f'coche1.png')
         self.image = pygame.transform.scale(self.image,(70,50))
-        self.image.set_colorkey(WHITE)
+        self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
         self.update()
 
@@ -202,7 +202,7 @@ class Car2_Draw(pygame.sprite.Sprite):
         self.car2 = car2
         self.image= pygame.image.load(f'coche2.png')
         self.image = pygame.transform.scale(self.image,(70,50))
-        self.image.set_colorkey(WHITE)
+        self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
         self.update()
 
@@ -225,7 +225,7 @@ class Car3_Draw(pygame.sprite.Sprite):
         self.car3 = car3
         self.image= pygame.image.load(f'coche3.png')
         self.image = pygame.transform.scale(self.image,(70,50))
-        self.image.set_colorkey(WHITE)
+        self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
         self.update()
 
@@ -246,17 +246,17 @@ class Display(): #SIN TERMINAR
     def __init__(self, game):        
         self.game = game
         self.rabbitD = [Rabbit_Draw(self.game.get_rabbit(i),i+1) for i in range(3)]
-        self.carD = [Car_Draw(self.game.get_banana(i)) for i in range(3)]
+        self.carD = [[Car1_Draw(self.game.get_car1(0)),Car2_Draw(self.game.get_car2(0)),Car3_Draw(self.game.get_car3(0))]
         self.all_sprites = pygame.sprite.Group()
         self.rabbit_group = pygame.sprite.Group()
-        self.bcar_group = pygame.sprite.Group()
+        self.car_group = pygame.sprite.Group()
         for rabbit in self.rabbitD:
             self.all_sprites.add(rabbit)
             self.rabbit_group.add(rabbit)
-        for banana in self.bananaD:
-            self.all_sprites.add(banana)
-            self.banana_group.add(banana)
-        self.screen = pygame.display.set_mode(SIZE)
+        for car in self.carD:
+            self.all_sprites.add(car)
+            self.car_group.add(car)
+        self.screen = pygame.display.set_mode((HEIGHT,WIDTH))
         self.clock =  pygame.time.Clock()  #FPS
         self.background = pygame.image.load('road.jpg')
         self.background = pygame.transform.scale(self.background,(WIDTH,HEIGHT))
