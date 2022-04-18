@@ -83,7 +83,7 @@ class Car3():
 ##################################################
 
 class Game():
-    def __init(self):
+    def __init__(self):
         self.players=[Player(i) for i in range(3)]
         self.car1=[Car1(i) for i in range(2)]
         self.car2=[Car2(i) for i in range(2)]
@@ -91,10 +91,10 @@ class Game():
         self.running=True
   
     def get_rabbit(self,side):
-        return self.rabbit[size]
+        return self.players[side]
     
     def set_pos_rabbit(self,side,pos):
-        self.rabbit[side].set_pos(pos)
+        self.players[side].set_pos(pos)
     
     def get_car1(self,i):
         return self.car1[i]
@@ -118,9 +118,9 @@ class Game():
         self.set_pos_rabbit(PLAYER_ONE, gameinfo['pos_player_one'])
         self.set_pos_rabbit(PLAYER_TWO, gameinfo['pos_player_two'])
         self.set_pos_rabbit(PLAYER_THREE, gameinfo['pos_player_three'])
-        info_car1=gameinfo['pos_car1']
-        info_car2=gameinfo['pos_car2']
-        info_car3=gameinfo['pos_car3']
+        info_car1=gameinfo['pos_car_one']
+        info_car2=gameinfo['pos_car_two']
+        info_car3=gameinfo['pos_car_three']
         for i in range(2):
             Car1_i=info_car1[i]
             self.set_pos_car1(i,Car1_i)
@@ -130,7 +130,7 @@ class Game():
         for i in range(2):
             Car3_i=info_car3[i]
             self.set_pos_car3(i,Car3_i)  
-        self.running=gameinfo['is running']
+        self.running=gameinfo['is_running']
                        
     def is_running(self):
         return self.running
@@ -150,7 +150,7 @@ class Game():
               
 class Rabbit_Draw(pygame.sprite.Sprite):
     
-    def __init__(self,mon,ind):
+    def __init__(self,rab,ind):
         super().__init__()
         self.rabbit = rab
         self.index = ind
@@ -245,8 +245,7 @@ class Display(): #SIN TERMINAR
     
     def __init__(self, game):        
         self.game = game
-        self.score = game.get_score()
-        self.rabbitD = [Rabbit_Draw(self.game.get_monkey(i),i+1) for i in range(3)]
+        self.rabbitD = [Rabbit_Draw(self.game.get_rabbit(i),i+1) for i in range(3)]
         self.carD = [Car_Draw(self.game.get_banana(i)) for i in range(3)]
         self.all_sprites = pygame.sprite.Group()
         self.rabbit_group = pygame.sprite.Group()
