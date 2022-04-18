@@ -85,9 +85,9 @@ class Car3():
 class Game():
     def __init__(self):
         self.players=[Player(i) for i in range(3)]
-        self.car1=[Car1(i) for i in range(2)]
-        self.car2=[Car2(i) for i in range(2)]
-        self.car3=[Car3(i) for i in range(2)]
+        self.car1=[Car1(i) for i in range(3)]
+        self.car2=[Car2(i) for i in range(3)]
+        self.car3=[Car3(i) for i in range(3)]
         self.running=True
   
     def get_rabbit(self,side):
@@ -246,7 +246,7 @@ class Display(): #SIN TERMINAR
     def __init__(self, game):        
         self.game = game
         self.rabbitD = [Rabbit_Draw(self.game.get_rabbit(i),i+1) for i in range(3)]
-        self.carD = [[Car1_Draw(self.game.get_car1(0)),Car2_Draw(self.game.get_car2(0)),Car3_Draw(self.game.get_car3(0))]
+        self.carD = [Car1_Draw(self.game.get_car1(i)) for i in range(3)]+[Car2_Draw(self.game.get_car2(i)) for i in range(3)]+[Car3_Draw(self.game.get_car3(i)) for i in range(3)]
         self.all_sprites = pygame.sprite.Group()
         self.rabbit_group = pygame.sprite.Group()
         self.car_group = pygame.sprite.Group()
