@@ -5,8 +5,8 @@ from multiprocessing import current_process
 import time, random
 from random import randint
 
-NorthCars = randint(4,10) #final location North
-SouthCars = randint(4,10) #final location South
+NorthCars = randint(4,10) #número total de coches que van al norte
+SouthCars = randint(4,10) #número total de coches que van al sur
 
 print("There are",NorthCars,"cars who want to go North")
 print("There are",SouthCars,"cars who want to go Soruth")
@@ -42,7 +42,7 @@ class Monitor():
     def go_south(self):
         self.mutex.acquire()
         self.nsouth.value -= 1
-        self.turn.value == 0
+        self.turn.value = 0
         if self.nsouth.value == 0:
             self.no_south.notify_all()
         self.mutex.release()
