@@ -10,7 +10,7 @@ import traceback
 import sys
 import random as rd
 
-HEIGHT=400
+HEIGHT=800
 WIDTH=800
 PLAYER_ONE=0
 PLAYER_TWO=1
@@ -24,16 +24,13 @@ Y = 1
 class Player():
 #clase de los conejos, para indicar su tamaÃ±o, su posiciÃ³n y sus movimientos
     def __init__(self,side):
-        self.side=side
-        if side==PLAYER_ONE:
-            self.pos=[WIDTH/4,0]
-            #self.pos=[WIDTH/4,HEIGHT-30]
-        if side==PLAYER_TWO:
-            self.pos=[WIDTH/2,0]
-            #self.pos=[WIDTH/2,HEIGHT-30]
-        if side==PLAYER_THREE:
-            self.pos=[3*WIDTH/4,0]
-            #self.pos=[3*WIDTH/4,HEIGHT-30]
+        self.side = side
+        if side == PLAYER_ONE:
+            self.pos = [WIDTH/4,HEIGHT-30]
+        if side == PLAYER_TWO:
+            self.pos=[WIDTH/2,HEIGHT-30]
+        if side == PLAYER_THREE:
+            self.pos = [3*WIDTH/4,HEIGHT-30]
   
     def get_pos(self):
         return self.pos
@@ -42,81 +39,52 @@ class Player():
         return self.side
  
     def moveDown(self):
-        self.pos[1]+=MOVEMENT
-        if self.pos[1]>HEIGHT:
-            self.pos[1]=HEIGHT
+        self.pos[1] += MOVEMENT
+        if self.pos[1] > HEIGHT-30:
+            self.pos[1] = HEIGHT-30
   
     def moveUP(self):
-        #self.pos[1]+=MOVEMENT
-        self.pos[1]-=MOVEMENT
-        #if self.pos[1]<0:
-           #self.pos[1]=0
+        self.pos[1] -= MOVEMENT
   
     def reiniciar_P(self):
-        self.pos[1]=0
+        self.pos[1] = HEIGHT-30
       
     def __str__(self):
         return f"P<{SIDESSTR[self.side]},{self.pos}>"
       
 
-  
-class Car1():
-#Clase de los coches del carril superior, indicando su tamaÃ±o, su posiciÃ³n y sus movimientos.
-    def __init__(self,index):
-        self.x = rd.randint(-10000,-1) #los situamos a la izquierda de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante  
-        self.y = 100  #La altura 100 se coresponde con el carril superior
-        self.pos = [self.x , self.y]
-        self.vel = rd.randint(8,20) 
+
+class Car():
+    #Clase de los coches.    
+    def __init__(self,n):
+        l = [100,300,500]
+        self.index = n         
+        self.y = l[self.index]
+        if self.index == 0:
+            self.x = rd.randint(-1000,-1)             
+            self.pos = [self.x , self.y]
+            self.vel = 6
+        if self.index == 2:
+            self.x = rd.randint(-1000,-1)             
+            self.pos = [self.x , self.y]
+            self.vel = 3
+        if self.index == 1:
+            self.x = rd.randint(-1000,-1)            
+            self.pos = [self.x , self.y]
+            self.vel = 4
     
     def get_pos(self):
         return self.pos         
         
-    def update(self): #con la funciÃ³n update (el paso de los frames del juego) indicamos que los coches solo se moverÃ¡n en el eje horizontal        
-        self.pos[Y] = self.pos[Y] 
-        self.pos[X] += self.vel  
-     
-    def __str__(self):
-        return f"B<{self.pos}>"
-  
-  
-  
-class Car2():
-#Clase de los coches que van por el carril medio, de derecha a izquierda, indicando su tamaÃ±o, su posiciÃ³n y sus movimientos.
-    def __init__(self,index):
-        self.x = rd.randint(800,10800) #los situamos a la derecha de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante       
-        self.y = 300   #la altura 300 se corresponde con el carril central
-        self.pos = [self.x , self.y]
-        self.vel = rd.randint(8,20) 
-    
-    def get_pos(self):
-        return self.pos         
+    def update(self):        
         
-    def update(self): #con la funciÃ³n update (el paso de los frames del juego) indicamos que los coches solo se moverÃ¡n en el eje horizontal        
         self.pos[Y] = self.pos[Y] 
-        self.pos[X] += self.vel  
-     
-    def __str__(self):
-    	return f"B<{self.pos}>"
-  
- 
-  
-class Car3():
-#Clase de los coches del carril superior, de izquierda a derecha, indicando su tamaÃ±o, su posiciÃ³n y sus movimientos.
-    def __init__(self,index):
-        self.x = rd.randint(-10000,-1) #los situamos a la izquierda de la pantalla a mayor o menor distancia de ella, para que su aparicion en el juego sea en distinto instante  
-        self.y = 500  #La altura 500 se coresponde con el carril inferior
-        self.pos = [self.x , self.y]
-        self.vel = rd.randint(8,20) 
-    
-    def get_pos(self):
-        return self.pos         
-        
-    def update(self): #con la funciÃ³n update (el paso de los frames del juego) indicamos que los coches solo se moverÃ¡n en el eje horizontal        
-        self.pos[Y] = self.pos[Y] 
-        self.pos[X] += self.vel  
+        self.pos[X] += self.vel 
      
     def __str__(self):
         return f"B<{self.pos}>"  
+
+  
   
 
   
@@ -125,42 +93,29 @@ class Game():
     def __init__(self, manager):
   
         self.players=manager.list([Player(PLAYER_ONE), Player(PLAYER_TWO), Player(PLAYER_THREE)])
-        self.car1=manager.list([Car1(i) for i in range(2)])
-        self.car2=manager.list([Car2(i) for i in range(2)])
-        self.car3=manager.list([Car3(i) for i in range(2)])
-        self.running=True
+        self.cars=manager.list([Car(i) for i in range(3)])
+        self.running=Value('i', 1) # 1 running
         self.lock=Lock()
   
     def get_player(self,side):
         return self.players[side]
 
-    def get_car1(self):
-        for i in range(2):
-            return self.car1[i]
-    
-    def get_car2(self):
-        for i in range(2):
-            return self.car2[i]
-  
-    def get_car3(self):
-        for i in range(2):
-            return self.car3[i]
+    def get_car(self):
+        for i in range(3):
+            return self.cars[i]
   
     def is_running(self):
-        return self.running
+        return self.running.value == 1
 
     def stop(self):
         pos1 = self.players[0].pos[1]
         pos2 = self.players[1].pos[1]
         pos3 = self.players[2].pos[1]
         if pos1 <= 0:
-            self.winner = 1 #guardamos el ganador por si lo queremos poner luego por pantalla
             self.running.value = 0
         if pos2 <= 0:
-            self.winner = 2
             self.running.value = 0
         if pos3 <= 0:
-            self.winner = 3
             self.running.value = 0
 
     def moveUp(self,player):
@@ -177,67 +132,58 @@ class Game():
         self.players[player] = p
         self.lock.release() 
     
-    def player_collide(self,player): #Para cuando algÃºn conejo se choque con un coche
+    def first_collide(self, player): #Para cuando el primer conejo se choque con un coche
+        
         self.lock.acquire()
-        p=self.players[player]
+        p = self.players[PLAYER_ONE]
         p.reiniciar_P()
-        self.players[player]=p
-        seelf.lock.release()
-       
+        self.players[PLAYER_ONE] = p
+        self.lock.release()
+        
+    def second_collide(self, player): #Para cuando el segundo conejo se choque con un coche
+        
+        self.lock.acquire()
+        p = self.players[PLAYER_TWO]
+        p.reiniciar_P()
+        self.players[PLAYER_TWO] = p
+        self.lock.release()
+        
+    def third_collide(self, player): #Para cuando el tercer conejo se choque con un coche
+        
+        self.lock.acquire()
+        p = self.players[PLAYER_THREE]
+        p.reiniciar_P()
+        self.players[PLAYER_THREE] = p
+        self.lock.release()
+          
     def get_info(self):
     #Diccionario que nos de las posiciones de todos los elementos en pantalla
-        pos_Car1=[]
-        for i in range (2):
-            pos_Car1.append(self.car1[i].get_pos())
-        pos_Car2=[]
-        for i in range (2):
-            pos_Car2.append(self.car2[i].get_pos())
-        pos_Car3=[]
-        for i in range (2):
-            pos_Car3.append(self.car3[i].get_pos())
+        pos_Car=[]
+        for i in range (3):
+            pos_Car.append(self.cars[i].get_pos())
+
         info={'pos_player_one':self.players[PLAYER_ONE].get_pos(),
           'pos_player_two':self.players[PLAYER_TWO].get_pos(),
           'pos_player_three':self.players[PLAYER_THREE].get_pos(),
-          'pos_car_one':pos_Car1,'pos_car_two':pos_Car2,'pos_car_three':pos_Car3,
-         'is_running':self.running}
+          'pos_cars': pos_Car,
+         'is_running':self.running.value == 1
+         }
         return info
-  
-    def move_car1(self):
-        self.lock.acquire()
-        for i in range(2):
-            coche1=self.car1[i]
-            coche1.update()
-            pos=coche1.get_pos()
-            if pos[0]>=WIDTH:
-                coche1=Car1(i)
-            self.car1[i]=coche1
-        self.lock.release()
-    
-    def move_car2(self):
-        self.lock.acquire()
-        for i in range(2):
-            coche2=self.car2[i]
-            coche2.update()
-            pos=coche2.get_pos()
-            if pos[0]>=WIDTH:
-                coche2=Car2(i)
-            self.car2[i]=coche2
-        self.lock.release()
 
-    def move_car2(self):
+    def move_car(self):
         self.lock.acquire()
-        for i in range(2):
-            coche2=self.car1[i]
-            coche2.update()
-            pos=coche2.get_pos()
+        for i in range(3):
+            coche=self.cars[i]
+            coche.update()
+            pos=coche.get_pos()
             if pos[0]>=WIDTH:
-                coche2=Car2(i)
-            self.car2[i]=coche2
+                coche=Car(i)
+            self.cars[i]=coche
         self.lock.release()
 
     def __str__(self):     
-        return f"G<{self.player[PLAYER_ONE]}:{self.player[PLAYER_TWO]}:{self.player[PLAYER_THREE]}{self.running}"
-  
+        return f"G<{self.players[PLAYER_ONE]}:{self.players[PLAYER_TWO]}:{self.players[PLAYER_THREE]}{self.running}"
+
 def player(side,conn,game):
     try:
         print(f"starting player {SIDESSTR[side]}:{game.get_info()}")
@@ -250,10 +196,21 @@ def player(side,conn,game):
                     game.moveUp(side)
                 elif command=="down": #para que la tecla "down" haga que retroceda el conejo
                     game.moveDown(side)
-                elif command=="collide": #para cuando algÃºn conejo  se choque con algÃºn coche
-                    game.player_collide(side)
+                elif command == "quit": #para terminar el juego pulsando escape
+                    game.finish()          
+                elif command == "firstcollide" and side == 0:
+                    game.first_collide(side)
+                elif command == "secondcollide" and side == 1:
+                    game.second_collide(side)
+                elif command == "thirdcollide" and side == 2:
+                    game.third_collide(side)
         
-          
+        if side == 1 or side == 2:
+                game.move_car()
+                if game.stop():
+                    return f"GAME OVER"
+        conn.send(game.get_info())
+                  
     except:
         traceback.print_exc()
         conn.close()
@@ -294,3 +251,5 @@ if __name__=='__main__':
     if len(sys.argv)>1:
         ip_address=sys.argv[1]
     main(ip_address)
+
+
