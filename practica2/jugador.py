@@ -66,7 +66,7 @@ class Coche():
         return f"C<{self.pos}>"
 
 class Game():
-    
+#Clase del juego, donde inicializamos los dos objetos anteriores y su movimiento segun avanzan las imágenes.    
     def __init__(self):
         self.conejos=[Conejo(i) for i in range(3)]
         self.coche=[Coche(i) for i in range(3)]
@@ -105,7 +105,7 @@ class Game():
             return f"G<{self.conejos[SECOND_PLAYER]}:{self.conejos[FIRST_PLAYER]}:{self.coche[i]}>"
 
 class Conejo_Draw(pygame.sprite.Sprite):
-    
+#Clase para dar imagen a nuestra clase Conejo.    
     def __init__(self,mon,ind):
         super().__init__()
         self.conejo=mon
@@ -128,7 +128,7 @@ class Conejo_Draw(pygame.sprite.Sprite):
 
 
 class Coche_Draw(pygame.sprite.Sprite):
-    
+#Clase para dar imagen a nuestra clase Coche.    
     def __init__(self,auto):
         super().__init__()
         self.coche=auto
@@ -151,7 +151,7 @@ class Coche_Draw(pygame.sprite.Sprite):
         return f"P<{self.auto.pos}>"
    
 class Display():
-    
+#Clase para arrancar el juego y establecer sus reglas.    
     def __init__(self,game):        
         self.game=game
         self.conejos=[self.game.get_conejo(i) for i in range(3)]
@@ -187,22 +187,17 @@ class Display():
         #if pygame.sprite.groupcollide(self.conejosD,self.cocheD,False,False):            
         if pygame.sprite.spritecollideany(self.conejosD[0],self.cocheD):
             events.append("firstcollide")
-            
         if pygame.sprite.spritecollideany(self.conejosD[1],self.cocheD):
            events.append("secondcollide") 
-                         
         if pygame.sprite.spritecollideany(self.conejosD[2],self.cocheD):
            events.append("thirdcollide")  
-                 
         return events
 
     def refresh(self):
-        
         self.all_sprites.update()
         self.screen.blit(self.background,(0,0))
         font=pygame.font.Font(None,74)
         aux=False
-        
         if self.conejos[0].pos[1]<=0:
             font2=pygame.font.Font(None,50) 
             text1=font2.render(f"PLAYER 1 WINS!",1,BLUE)
