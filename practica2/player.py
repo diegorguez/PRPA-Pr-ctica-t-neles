@@ -1,246 +1,251 @@
+"""Aplicación distribuida
+   Juego: Cruzar la carretera"""
+
 from multiprocessing.connection import Client
 import traceback
 import pygame
 import sys, os
+import random
+import time
 
-HEIGHT=800
-WIDTH=800
+#Definimos colores que nos servirán mas adelante
+WHITE=(255,255,255)
+RED=(190,0,0)
+BLUE=(0,0,190)
+GREEN=(0,190,0)
 
-PLAYER_ONE=0
-PLAYER_TWO=1
-PLAYER_THREE=2
+#Definimos la resolución
+W=800
+H=450
+SIZE=(W,H)
 
-SIDESSTR = ["left","centre","right"]
+#Definimos los jugadores
+FIRST_PLAYER=0
+SECOND_PLAYER=1
+THIRD_PLAYER=2
+SIDESSTR=["left","centre","right"]
 SIDES=["down","up"]
 
-FPS = 60
+#Definimos las frames por segundo
+FPS=120
 
-##################################################
-
-class Player():
-    def __init__(self,side):
+class Conejo():
+#Clase de los conejos, para indicar su tamaño, su posición y sus movimientos.     
+    def __init__(self,side):        
         self.side=side
         self.pos=[None,None]
-    
+
     def get_pos(self):
         return self.pos
-  
+
     def get_side(self):
         return self.side
-  
+
     def set_pos(self,pos):
         self.pos=pos
-    
+
     def __str__(self):
-        return f"P<{SIDES[self.side],self.pos}>"
-  
-##################################################
+        return f"C<{SIDES[self.side], self.pos}>"
 
-class Car():
-
-    def __init__(self,n):
+class Coche():
+#Clase de los coches. Habrá tres tipos y tendrán posiciones distintas y velocidades aleatorias.    
+    def __init__(self,n):        
         self.pos=[None,None,None]
-        self.divider = n
-    
+        self.divider=n
+
     def get_pos(self):
         return self.pos
-    
+        
     def get_index(self):
         return self.divider
-          
+
     def set_pos(self,pos):
-        self.pos=pos
-      
+        self.pos = pos
+
     def __str__(self):
-        return f"C<self.pos>"
-    
-##################################################
+        return f"C<{self.pos}>"
 
 class Game():
+    
     def __init__(self):
-        self.players=[Player(i) for i in range(3)]
-        self.car=[Car(i) for i in range(3)]
+        self.conejos=[Conejo(i) for i in range(3)]
+        self.coche=[Coche(i) for i in range(3)]
         self.running=True
+
+    def get_conejo(self,side):
+        return self.conejos[side]
+
+    def set_pos_conejo(self,side,pos):
+        self.conejos[side].set_pos(pos)
+
+    def get_coche(self,i): 
+        return self.coche[i]
   
-    def get_rabbit(self,side):
-        return self.players[side]
-    
-    def set_pos_rabbit(self,side,pos):
-        self.players[side].set_pos(pos)
-    
-    def get_car(self,i):
-        return self.car[i]
-  
-    def set_pos_car(self,i,pos):
-        self.car[i].set_pos(pos)
-    
+    def set_pos_coche(self,i,pos):
+        self.coche[i].set_pos(pos)
+
     def update(self, gameinfo):
-        self.set_pos_rabbit(PLAYER_ONE, gameinfo['pos_player_one'])
-        self.set_pos_rabbit(PLAYER_TWO, gameinfo['pos_player_two'])
-        self.set_pos_rabbit(PLAYER_THREE, gameinfo['pos_player_three'])
-        info_car=gameinfo['pos_cars']
+        self.set_pos_conejo(FIRST_PLAYER, gameinfo['pos_first_player'])
+        self.set_pos_conejo(SECOND_PLAYER, gameinfo['pos_second_player'])
+        self.set_pos_conejo(THIRD_PLAYER, gameinfo['pos_third_player'])
+        info_auto=gameinfo['pos_coches']
         for i in range(3):
-            Car_i=info_car[i]
-            self.set_pos_car(i,Car_i)  
+            Auto_i=info_auto[i]
+            self.set_pos_coche(i,Auto_i)
         self.running=gameinfo['is_running']
-                       
+
     def is_running(self):
         return self.running
-   
+
     def finish(self):
         self.running=False
-         
+
     def __str__(self):
         for i in range(3):
-            return f"G<{self.players[PLAYER_TWO]}:{self.players[PLAYER_ONE]}:{self.car[i]}"
+            return f"G<{self.conejos[SECOND_PLAYER]}:{self.conejos[FIRST_PLAYER]}:{self.coche[i]}>"
 
-##################################################
-              
-class Rabbit_Draw(pygame.sprite.Sprite):
+class Conejo_Draw(pygame.sprite.Sprite):
     
-    def __init__(self,rab,ind):
+    def __init__(self,mon,ind):
         super().__init__()
-        self.rabbit = rab
-        self.index = ind
-        self.image = pygame.image.load(f'conejo{self.index}.png')
-        self.image = pygame.transform.scale(self.image,(70,70))
-        self.image.set_colorkey((255, 255, 255))
-        self.rect = self.image.get_rect()
+        self.conejo=mon
+        self.index=ind
+        self.image=pygame.image.load(f'conejo{self.index}.png')
+        self.image=pygame.transform.scale(self.image,(70,70))
+        self.image.set_colorkey(WHITE)
+        self.rect=self.image.get_rect()
         self.update()
         
     def update(self):        
-        pos = self.rabbit.get_pos()
-        self.rect.centerx, self.rect.centery = pos  
+        pos = self.conejo.get_pos()
+        self.rect.centerx, self.rect.centery=pos  
         
     def draw(self, screen):
         screen.window.blit(self.image, self.rect)
    
     def __str__(self):
-        return f"S<{self.rab}>"
+        return f"S<{self.mon}>"
 
-##################################################
-              
-class Car_Draw(pygame.sprite.Sprite):
+
+class Coche_Draw(pygame.sprite.Sprite):
     
-    def __init__(self, car):
+    def __init__(self,auto):
         super().__init__()
-        self.car = car
-        n = self.car.get_index()
-        self.image= pygame.image.load(f'coche{n+1}.png')
-        self.image = pygame.transform.scale(self.image,(70,50))
-        self.image.set_colorkey((255, 255, 255))
-        self.rect = self.image.get_rect()
+        self.coche=auto
+        y = self.coche.get_index()
+        self.image=pygame.image.load(f'coche{y+1}.png')
+        self.image=pygame.transform.scale(self.image,(70,50))
+        self.image.set_colorkey(WHITE)
+        self.rect=self.image.get_rect()
         self.update()
 
     def update(self):
-        pos = self.car.get_pos()
-        self.rect.centerx, self.rect.centery = pos
+        pos=self.coche.get_pos()
+        print(pos)
+        self.rect.centerx,self.rect.centery=pos
         
     def draw(self,screen):
         screen.window.blit(self.image,(self.ball.pos))
        
     def __str__(self):
-        return f"P<{self.car.pos}>"              
-
-##################################################        
-
+        return f"P<{self.auto.pos}>"
+   
 class Display():
     
-    def __init__(self, game):        
-        self.game = game
-        self.rabbits = [self.game.get_rabbit(i) for i in range(3)]
-        self.rabbitD = [Rabbit_Draw(self.game.get_rabbit(i),i+1) for i in range(3)]
-        self.carD = [Car_Draw(self.game.get_car(i)) for i in range(3)]
-        self.all_sprites = pygame.sprite.Group()
-        self.rabbit_group = pygame.sprite.Group()
-        self.car_group = pygame.sprite.Group()
-        for rabbit in self.rabbitD:
-            self.all_sprites.add(rabbit)
-            self.rabbit_group.add(rabbit)
-        for car in self.carD:
-            self.all_sprites.add(car)
-            self.car_group.add(car)
-        self.screen = pygame.display.set_mode((WIDTH,HEIGHT))
-        self.clock =  pygame.time.Clock()  #FPS
-        self.background = pygame.image.load('road.jpg')
-        self.background = pygame.transform.scale(self.background,(WIDTH,HEIGHT))
+    def __init__(self,game):        
+        self.game=game
+        self.conejos=[self.game.get_conejo(i) for i in range(3)]
+        self.conejosD=[Conejo_Draw(self.game.get_conejo(i),i+1) for i in range(3)]
+        self.cocheD=[Coche_Draw(self.game.get_coche(i)) for i in range(3)]
+        self.all_sprites=pygame.sprite.Group()
+        self.conejo_group=pygame.sprite.Group()
+        self.coche_group=pygame.sprite.Group()
+        for conejo in self.conejosD:
+            self.all_sprites.add(conejo)
+            self.conejo_group.add(conejo)
+        for coche in self.cocheD:
+            self.all_sprites.add(coche)
+            self.coche_group.add(coche)
+        self.screen=pygame.display.set_mode(SIZE)
+        self.clock=pygame.time.Clock()  #FPS
+        self.background=pygame.image.load('carretera.jpg')
+        self.background=pygame.transform.scale(self.background,SIZE)
         pygame.init()
-
-    def analyze_events(self, side):        
-        events = []        
+     
+    def analyze_events(self,side):        
+        events=[]        
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
+            if event.type==pygame.KEYDOWN:
+                if event.key==pygame.K_ESCAPE:
                     events.append("quit")
-                elif event.key == pygame.K_DOWN:
+                elif event.key==pygame.K_DOWN:
                     events.append("down")
-                elif event.key == pygame.K_UP:
+                elif event.key==pygame.K_UP:
                     events.append("up")
-            elif event.type == pygame.QUIT:
-                events.append("quit")                
-        
-        if pygame.sprite.spritecollideany(self.rabbitD[0],self.carD):
+            elif event.type==pygame.QUIT:
+                events.append("quit")        
+        #if pygame.sprite.groupcollide(self.conejosD,self.cocheD,False,False):            
+        if pygame.sprite.spritecollideany(self.conejosD[0],self.cocheD):
             events.append("firstcollide")
             
-        if pygame.sprite.spritecollideany(self.rabbitD[1],self.carD):
+        if pygame.sprite.spritecollideany(self.conejosD[1],self.cocheD):
            events.append("secondcollide") 
                          
-        if pygame.sprite.spritecollideany(self.rabbitD[2],self.carD):
-           events.append("thirdcollide")    
-                              
+        if pygame.sprite.spritecollideany(self.conejosD[2],self.cocheD):
+           events.append("thirdcollide")  
+                 
         return events
 
     def refresh(self):
-        self.all_sprites.update()
-        self.screen.blit(self.background, (0,0))
-        font = pygame.font.Font(None, 74)
-        aux = False
         
-        if self.rabbits[0].pos[1] <= 0:
-            font2 = pygame.font.Font(None,50) 
-            text1 = font2.render(f"PLAYER 1 WINS!", 1, RED)
-            self.screen.blit(text1, (45, 150))
-            aux = True
-        if self.rabbits[1].pos[1] <= 0:
-            font2 = pygame.font.Font(None,50) 
-            text1 = font2.render(f"PLAYER 2 WINS!", 1, RED)
-            self.screen.blit(text1, (45, 150))
-            aux = True
-        if self.rabbits[2].pos[1] <= 0:
-            font2 = pygame.font.Font(None,50) 
-            text1 = font2.render(f"PLAYER 3 WINS!", 1, RED)
-            self.screen.blit(text1, (45, 150))
-            aux = True
+        self.all_sprites.update()
+        self.screen.blit(self.background,(0,0))
+        font=pygame.font.Font(None,74)
+        aux=False
+        
+        if self.conejos[0].pos[1]<=0:
+            font2=pygame.font.Font(None,50) 
+            text1=font2.render(f"PLAYER 1 WINS!",1,BLUE)
+            self.screen.blit(text1,((5*W/16)-150,150))
+            aux=True
+        if self.conejos[1].pos[1]<=0:
+            font2=pygame.font.Font(None,50) 
+            text1=font2.render(f"PLAYER 2 WINS!",1,RED)
+            self.screen.blit(text1,((W/2)-150,150))
+            aux=True
+        if self.conejos[2].pos[1]<=0:
+            font2=pygame.font.Font(None,50) 
+            text1=font2.render(f"PLAYER 3 WINS!",1,GREEN)
+            self.screen.blit(text1,((11*W/16)-150,150))
+            aux=True
         self.all_sprites.draw(self.screen)
         pygame.display.flip()
         if aux:
-            time.sleep(6)     
+            time.sleep(6)
+
     def tick(self):
         self.clock.tick(FPS)
 
     @staticmethod
     def quit():
         pygame.quit()
-                
-##################################################                 
-                
-def main(ip_address):
 
+def main(ip_address):    
     try:
-        with Client((ip_address, 6000), authkey=b'secret password') as conn:
-            game = Game()
-            side,gameinfo = conn.recv()
+        with Client((ip_address,6000),authkey=b'secret password') as conn:
+            game=Game()
+            side,gameinfo=conn.recv()
             print(f"I am playing {SIDESSTR[side]}")
             game.update(gameinfo)
-            display = Display(game)
+            display=Display(game)
             while game.is_running():
-                events = display.analyze_events(side)
+                events=display.analyze_events(side)
                 for ev in events:
                     conn.send(ev)
-                    if ev == 'quit':
+                    if ev=='quit':
                         game.finish()
                 conn.send("next")
-                gameinfo = conn.recv()
+                gameinfo=conn.recv()
                 game.update(gameinfo)
                 display.refresh()
                 display.tick()
@@ -248,10 +253,9 @@ def main(ip_address):
         traceback.print_exc()
     finally:
         pygame.quit()
-                
-        
+
 if __name__=="__main__":
     ip_address="127.0.0.1"
     if len(sys.argv)>1:
         ip_address=sys.argv[1]
-    main(ip_address)
+    main(ip_address)    
