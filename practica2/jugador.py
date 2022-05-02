@@ -111,7 +111,7 @@ class Conejo_Draw(pygame.sprite.Sprite):
         self.conejo=mon
         self.index=ind
         self.image=pygame.image.load(f'conejo{self.index}.png')
-        self.image=pygame.transform.scale(self.image,(70,70))
+        self.image=pygame.transform.scale(self.image,(40,60))
         self.image.set_colorkey(WHITE)
         self.rect=self.image.get_rect()
         self.update()
