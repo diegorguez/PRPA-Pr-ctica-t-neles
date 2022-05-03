@@ -1,5 +1,4 @@
-"""Aplicación distribuida
-   Juego: Cruzar la carretera"""
+"""JUEGO CARRETERA"""
 
 from multiprocessing.connection import Listener
 from multiprocessing import Process, Manager, Value, Lock
@@ -61,7 +60,7 @@ class Conejo():
 class Coche():
 #Clase de los coches. Habrá tres tipos y tendrán posiciones distintas y velocidades aleatorias.    
     def __init__(self,n):
-        l=[H/6,H/2,5*H/6]
+        l=[H/6,H/2,5*H/6-30]
         self.index=n         
         self.y=l[self.index]
         if self.index==0:
@@ -92,7 +91,7 @@ class Coche():
 
 
 class Game():
-#clase para definir el juego e inicializar las clases anteriores.    
+    
     def __init__(self,manager):
         self.conejos=manager.list([Conejo(FIRST_PLAYER),Conejo(SECOND_PLAYER),Conejo(THIRD_PLAYER)])
         self.coches=manager.list([Coche(i) for i in range(N)])
@@ -194,8 +193,7 @@ class Game():
     def __str__(self):     
         return f"G<{self.conejos[THIRD_PLAYER]}:{self.conejos[SECOND_PLAYER]}:{self.conejos[FIRST_PLAYER]}:{self.running.value}:Score:{self.score}>"
 
-def player(side,conn,game):
-#Función para definir los controles de los jugadores.
+def player(side,conn,game):    
     try:
         print(f"starting player {SIDESSTR[side]}:{game.get_info()}")
         conn.send( (side,game.get_info()) )
@@ -214,12 +212,14 @@ def player(side,conn,game):
                 elif command=="secondcollide" and side==1:
                     game.second_collide(side)
                 elif command=="thirdcollide" and side==2:
-                    game.third_collide(side)    
+                    game.third_collide(side)                     
+                               
             if side==1 or side==2:
                 game.move_coche()
                 if game.stop():
                     return f"GAME OVER"
-            conn.send(game.get_info())   
+            conn.send(game.get_info())
+            
     except:
         traceback.print_exc()
         conn.close()
@@ -253,5 +253,6 @@ if __name__=='__main__':
     ip_address="127.0.0.1"
     if len(sys.argv)>2:
         ip_address=sys.argv[1]
-         port=int(sys.argv[2])
-    main(ip_address, port)
+        port=int(sys.argv[2])    
+    main(ip_address,port)
+    
