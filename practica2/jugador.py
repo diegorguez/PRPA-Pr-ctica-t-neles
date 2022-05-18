@@ -167,7 +167,7 @@ class Display():
             self.coche_group.add(coche)
         self.screen=pygame.display.set_mode(SIZE)
         self.clock=pygame.time.Clock()  #FPS
-        self.background=pygame.image.load('carretera.jpg')
+        self.background=pygame.image.load('road.png')
         self.background=pygame.transform.scale(self.background,SIZE)
         pygame.init()
      
