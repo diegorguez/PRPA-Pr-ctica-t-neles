@@ -111,7 +111,7 @@ def main(sc, files):
     print(f"El porcentaje del uso por trabajadores de la empresa es del {porcentaje(trabajadores,validos)}%")
     
     print(f"El porcentaje de desenganches totales en el Centro es del {porcentaje(centroT,validos)}%")
-    print(f"El porcentaje de desenganches por clientes ocasioanles en el Centro es del {porcentaje(centroO,ocasionales)}%")
+    print(f"El porcentaje de desenganches por clientes ocasionales en el Centro es del {porcentaje(centroO,ocasionales)}%")
     
     print(f"El porcentaje de clientes ocasionales entre 0 y 26 años es del {porcentaje(edad1,ocasionales)}% frente al total que es del {porcentaje(edadt1,validos)}%")
     print(f"El porcentaje de clientes ocasionales entre 27 y 40 años es del {porcentaje(edad2,ocasionales)}% frente al total que es del {porcentaje(edadt2,validos)}%")
